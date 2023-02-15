@@ -1,0 +1,46 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage[]{mdframed}
+\usepackage{tabularx}
+\usepackage{mathtools}
+\usepackage{subfig}
+\usepackage{placeins}
+\usepackage{float}
+
+\graphicspath{ {./images/} }
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+
+
+\author{Sidharth Babu and Laith Altarabishi}
+\title{ECE 461P: Homework 2 Scratch work}
+
+\begin{document}
+\begin{mdframed}
+    \maketitle
+\end{mdframed}
+\pagebreak
+
+\section{Problem 1}
+\subsection{Bias-Variance Decomposition}
+Target: $E[(y(x|D)-h(x))^2]$
+\begin{align*}
+    (y(x|D)-h(x))^2 &= (y(x|D)-E_d[y(x|D)]+E_d[y(x|D)]-h(x))^2 &\\
+    &= (y(x|D)-E_d[y(x|D)])^2 + (E_d[y(x|D)]-h(x))^2 + 2(y(x|D)-E_d[y(x|D)])(E_d[y(x|D)]-h(x)) &\\
+\end{align*}
+Let $ y(x \vert D) = y$ and $h(x) = h $
+\newline
+Taking Expectation of both sides:
+\begin{align*}
+    E[(y-h)^2] &= E[(y-E[y])^2] + E[E[y]^2-2E[y]+h^2] -2E[(y-E[y])(E[y]-h)] &\\
+    &= Var(y) + E[y]^2 - 2E[y]E[h] + E[h]^2 -2E[(y-E[y])(E[y]-h)] &\\
+    &= Var(y) + E[y]^2 - 2E[y]E[h] + E[h]^2 -2E[y]^2 +2E[y][h]+2E[y]^2-2E[h]E[y]&\\(
+    &= Var(y) + E[y]^2 + E[h]^2 - 2E[y]E[h] &\\
+    &= Var(y) + (E[y]- E[h])^2 &\\
+\end{align*}
+For a given X:
+\begin{align*}
+    E[(y(x|D)-h(x))^2] = Var(y(x|D)) + (E[y(x|D)]- h(x))^2
+\end{align*}
+
+
+\end{document}
