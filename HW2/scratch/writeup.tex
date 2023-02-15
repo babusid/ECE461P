@@ -33,13 +33,49 @@ Taking Expectation of both sides:
 \begin{align*}
     E[(y-h)^2] &= E[(y-E[y])^2] + E[E[y]^2-2E[y]+h^2] -2E[(y-E[y])(E[y]-h)] &\\
     &= Var(y) + E[y]^2 - 2E[y]E[h] + E[h]^2 -2E[(y-E[y])(E[y]-h)] &\\
-    &= Var(y) + E[y]^2 - 2E[y]E[h] + E[h]^2 -2E[y]^2 +2E[y][h]+2E[y]^2-2E[h]E[y]&\\(
+    &= Var(y) + E[y]^2 - 2E[y]E[h] + E[h]^2 -2E[y]^2 +2E[y][h]+2E[y]^2-2E[h]E[y]&\\
     &= Var(y) + E[y]^2 + E[h]^2 - 2E[y]E[h] &\\
     &= Var(y) + (E[y]- E[h])^2 &\\
 \end{align*}
 For a given X:
 \begin{align*}
     E[(y(x|D)-h(x))^2] = Var(y(x|D)) + (E[y(x|D)]- h(x))^2
+\end{align*}
+
+\section{Problem 2}
+\subsection{Log-Likelihood}
+Given:
+\begin{align*}
+&y = w_0x+\epsilon \\
+&\epsilon \sim N(0,\sigma^2) if x_i > 0\\
+&\epsilon \sim N(0,4\sigma^2) if x_i <= 0\\
+\end{align*}
+Therefore:
+\begin{align*}
+&y \sim N(w_0x, \sigma^2 \vert x_i>0) \\
+&y \sim N(w_0x, 4\sigma^2 \vert x_i<=0)\\
+\end{align*}
+NLL calculation for a constant noise model:
+\begin{align*}
+    \mathcal{L}(Y_n) &= \prod N(y_i \vert wx_0, \sigma^2) \\
+    l(Y_n) &= \sum \log N(y_i \vert wx_0, \sigma^2) \\
+    &= \sum \log \frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(y_i-wx_0)^2}{2\sigma^2}} \\
+    &= \sum \log (1) - \log(\sqrt{2\pi\sigma^2})+ \log (e^{-\frac{(y_i-wx_0)^2}{2\sigma^2}}) \\
+    &= \sum -\frac{1}{2}\log(2\pi\sigma^2) - \frac{(y_i-wx_0)^2}{2\sigma^2} \\
+    &= -\frac{n}{2}\log(2\pi\sigma^2) - \frac{1}{2\sigma^2}\sum(y_i-wx_0)^2\\
+\end{align*}
+
+NLL calculation for a non-constant noise model:
+\begin{align*}
+    \mathcal{L}(Y_n) &= \prod_{i:x_i>0} N(y_i \vert wx_0, \sigma^2) \prod_{i:x_i<=0} N(y_i \vert wx_0, 4\sigma^2) \\
+    l(Y_n) &= \sum_{i:x_i>0} \log N(y_i \vert wx_0, \sigma^2) + \sum_{i:x_i<=0} \log N(y_i \vert wx_0, 4\sigma^2) \\
+    &= \sum_{i:x_i>0} \log \frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(y_i-wx_0)^2}{2\sigma^2}} + \sum_{i:x_i<=0} \log \frac{1}{\sqrt{2\pi4\sigma^2}}e^{-\frac{(y_i-wx_0)^2}{2(4\sigma^2)}} \\
+    &= \sum_{i:x_i>0} \log (1) - \log(\sqrt{2\pi\sigma^2})+ \log (e^{-\frac{(y_i-wx_0)^2}{2\sigma^2}}) + \sum_{i:x_i<=0} \log (1) - \log(\sqrt{8\pi\sigma^2})+ \log (e^{-\frac{(y_i-wx_0)^2}{8\sigma^2}}) \\
+    &= \sum_{i:x_i>0} -\frac{1}{2}\log(2\pi\sigma^2) - \frac{(y_i-wx_0)^2}{2\sigma^2} + \sum_{i:x_i<=0} -\frac{1}{2}\log(8\pi\sigma^2) - \frac{(y_i-wx_0)^2}{8\sigma^2} \\
+    &= -\frac{n}{2}\log(2\pi\sigma^2) - \frac{1}{2\sigma^2}\sum_{i:x_i>0}(y_i-wx_0)^2 - \frac{n}{2}\log(8\pi\sigma^2) - \frac{1}{8\sigma^2}\sum_{i:x_i<=0}(y_i-wx_0)^2 \\
+    &= -\frac{n}{2}(\log(2\pi\sigma^2)+\log(8\pi\sigma^2)) - \frac{1}{2\sigma^2}\sum_{i:x_i>0}(y_i-wx_0)^2 - \frac{1}{8\sigma^2}\sum_{i:x_i<=0}(y_i-wx_0)^2 \\
+    &= -\frac{n}{2}(\log(2\pi\sigma^2*8\pi\sigma^2)) - \frac{1}{2\sigma^2}\sum_{i:x_i>0}(y_i-wx_0)^2 - \frac{1}{8\sigma^2}\sum_{i:x_i<=0}(y_i-wx_0)^2 \\
+    &= -\frac{n}{2}\log(16\pi\sigma^4) - \frac{1}{2\sigma^2}\sum_{i:x_i>0}(y_i-wx_0)^2 - \frac{1}{8\sigma^2}\sum_{i:x_i<=0}(y_i-wx_0)^2 \\
 \end{align*}
 
 
