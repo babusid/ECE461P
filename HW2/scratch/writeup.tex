@@ -6,6 +6,7 @@
 \usepackage{subfig}
 \usepackage{placeins}
 \usepackage{float}
+\usepackage{derivative}
 
 \graphicspath{ {./images/} }
 \usepackage[a4paper, total={6in, 8in}]{geometry}
@@ -77,6 +78,19 @@ NLL calculation for a non-constant noise model:
     &= -\frac{n}{2}(\log(2\pi\sigma^2*8\pi\sigma^2)) - \frac{1}{2\sigma^2}\sum_{i:x_i>0}(y_i-wx_0)^2 - \frac{1}{8\sigma^2}\sum_{i:x_i<=0}(y_i-wx_0)^2 \\
     &= -\frac{n}{2}\log(16\pi\sigma^4) - \frac{1}{2\sigma^2}\sum_{i:x_i>0}(y_i-wx_0)^2 - \frac{1}{8\sigma^2}\sum_{i:x_i<=0}(y_i-wx_0)^2 \\
 \end{align*}
+
+\section{Problem 4}
+The one-step update equation for w is:
+
+\begin{align*}
+    w_1 &= w_0 - \eta(\nabla E) \\
+    &= w_0 - \eta(\pdv{E}{w}(\frac{1}{N}\sum_{i}^{N}(y_i-w^Tx_i)^2)) \\
+\text{Since it is SGD, N is 1:}\\
+    &= w_0 - \eta(\pdv{E}{w}((y_i-w^Tx_i)^2)) \\
+    &= w_0 - \eta(-2x_i(y_i-w^Tx_i)) \\
+    &= w_0 + \eta(2x_i(y_i-w^Tx_i)) \\
+\end{align*}
+
 
 
 \end{document}
